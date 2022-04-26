@@ -44,15 +44,6 @@ impl AccountAddress {
         Self(buf)
     }
 
-    pub fn short_str_lossless(&self) -> String {
-        let hex_str = hex::encode(&self.0).trim_start_matches('0').to_string();
-        if hex_str.is_empty() {
-            "0".to_string()
-        } else {
-            hex_str
-        }
-    }
-
     pub fn to_vec(&self) -> Vec<u8> {
         self.0.to_vec()
     }
@@ -82,7 +73,7 @@ impl AccountAddress {
     }
 
     pub fn to_hex_literal(&self) -> String {
-        format!("0x{}", self.short_str_lossless())
+        format!("{}", self)
     }
 
     pub fn from_hex<T: AsRef<[u8]>>(hex: T) -> Result<Self, AccountAddressParseError> {
@@ -301,23 +292,6 @@ mod tests {
 
         assert_eq!(format!("{:#x}", address), format!("0x{}", hex));
         assert_eq!(format!("{:#X}", address), format!("0x{}", upper_hex));
-    }
-
-    #[test]
-    fn test_short_str_lossless() {
-        let address = AccountAddress::from_hex("00c0f1f95c5b1c5f0eda533eff269000").unwrap();
-
-        assert_eq!(
-            address.short_str_lossless(),
-            "c0f1f95c5b1c5f0eda533eff269000",
-        );
-    }
-
-    #[test]
-    fn test_short_str_lossless_zero() {
-        let address = AccountAddress::from_hex("00000000000000000000000000000000").unwrap();
-
-        assert_eq!(address.short_str_lossless(), "0");
     }
 
     #[test]
