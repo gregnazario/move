@@ -52,6 +52,16 @@ impl AccountAddress {
         self.0
     }
 
+    /// Matches short and long form hex literal if 0x is present, otherwise interprets
+    /// the hex digits and requires all digits.
+    pub fn from_hex_fuzzy(literal: &str) -> Result<Self, AccountAddressParseError> {
+        if literal.starts_with("0x") {
+            Self::from_hex_literal(literal)
+        } else {
+            Self::from_hex(literal)
+        }
+    }
+
     pub fn from_hex_literal(literal: &str) -> Result<Self, AccountAddressParseError> {
         if !literal.starts_with("0x") {
             return Err(AccountAddressParseError);
@@ -83,7 +93,7 @@ impl AccountAddress {
     }
 
     pub fn to_hex(&self) -> String {
-        format!("{:#X}", self)
+        format!("{:X}", self)
     }
 
     pub fn from_bytes<T: AsRef<[u8]>>(bytes: T) -> Result<Self, AccountAddressParseError> {
@@ -197,7 +207,7 @@ impl From<&AccountAddress> for [u8; AccountAddress::LENGTH] {
 
 impl From<&AccountAddress> for String {
     fn from(addr: &AccountAddress) -> String {
-        ::hex::encode(addr.as_ref())
+        format!("{}", addr)
     }
 }
 
@@ -205,7 +215,7 @@ impl TryFrom<String> for AccountAddress {
     type Error = AccountAddressParseError;
 
     fn try_from(s: String) -> Result<AccountAddress, AccountAddressParseError> {
-        Self::from_hex(s)
+        Self::from_hex_fuzzy(&s)
     }
 }
 
@@ -213,7 +223,7 @@ impl FromStr for AccountAddress {
     type Err = AccountAddressParseError;
 
     fn from_str(s: &str) -> Result<Self, AccountAddressParseError> {
-        Self::from_hex(s)
+        Self::from_hex_fuzzy(s)
     }
 }
 
