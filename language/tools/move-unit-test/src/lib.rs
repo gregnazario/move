@@ -16,7 +16,6 @@ use move_compiler::{
     unit_test::{self, TestPlan},
     Compiler, Flags, PASS_CFGIR,
 };
-use move_core_types::language_storage::ModuleId;
 use move_vm_runtime::native_functions::NativeFunctionTable;
 use std::{
     collections::BTreeMap,
@@ -114,10 +113,6 @@ pub struct UnitTestingConfig {
     pub evm: bool,
 }
 
-fn format_module_id(module_id: &ModuleId) -> String {
-    format!("{}::{}", module_id.address(), module_id.name())
-}
-
 impl UnitTestingConfig {
     /// Create a unit testing config for use with `register_move_unit_tests`
     pub fn default_with_bound(bound: Option<u64>) -> Self {
@@ -212,7 +207,7 @@ impl UnitTestingConfig {
                     writeln!(
                         shared_writer.lock().unwrap(),
                         "{}::{}: test",
-                        format_module_id(module_id),
+                        module_id,
                         test_name
                     )?;
                 }

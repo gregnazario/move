@@ -44,11 +44,7 @@ pub struct FunctionInfo {
 impl ModuleSummary {
     /// Summarizes the modules coverage in CSV format
     pub fn summarize_csv<W: Write>(&self, summary_writer: &mut W) -> io::Result<()> {
-        let module = format!(
-            "{}::{}",
-            self.module_name.address(),
-            self.module_name.name()
-        );
+        let module = format!("{}", self.module_name,);
 
         let mut format_line = |fn_name, covered, uncovered| {
             writeln!(
@@ -79,12 +75,7 @@ impl ModuleSummary {
         let mut all_total = 0;
         let mut all_covered = 0;
 
-        writeln!(
-            summary_writer,
-            "Module {}::{}",
-            self.module_name.address(),
-            self.module_name.name()
-        )?;
+        writeln!(summary_writer, "Module {}", self.module_name,)?;
 
         for (fn_name, fn_summary) in self.function_summaries.iter() {
             all_total += fn_summary.total;

@@ -450,7 +450,7 @@ impl Interpreter {
 
         debug_write!(buf, "    [{}] ", idx)?;
         if let Some(module) = func.module_id() {
-            debug_write!(buf, "{}::{}::", module.address(), module.name(),)?;
+            debug_write!(buf, "{}::", module)?;
         }
         debug_write!(buf, "{}", func.name())?;
         let ty_args = frame.ty_args();

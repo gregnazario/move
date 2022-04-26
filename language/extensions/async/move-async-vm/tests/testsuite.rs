@@ -170,10 +170,8 @@ impl Harness {
         for (addr, change) in changeset.into_inner() {
             for (struct_tag, val) in change.into_inner().1 {
                 self.log(format!(
-                    "  commit {}::{}::{}[{}] := {}",
-                    struct_tag.address,
-                    struct_tag.module,
-                    struct_tag.module,
+                    "  commit {}[{}] := {}",
+                    struct_tag,
                     addr,
                     val.as_ref()
                         .map(|b| format!("{:02X?}", b))

@@ -1,7 +1,6 @@
 // Copyright (c) The Diem Core Contributors
 // SPDX-License-Identifier: Apache-2.0
 
-use crate::format_module_id;
 use codespan_reporting::files::{Files, SimpleFiles};
 use colored::{control, Colorize};
 use move_binary_format::{
@@ -334,7 +333,7 @@ impl TestFailure {
                             .get_function_source_map(*fdef_idx)
                             .ok()?;
                         let loc = function_source_map.get_code_location(*offset).unwrap();
-                        let msg = format!("In this function in {}", format_module_id(module_id));
+                        let msg = format!("In this function in {}", module_id);
                         // TODO(tzakian) maybe migrate off of move-langs diagnostics?
                         Some(Diagnostic::new(
                             diagnostics::codes::Tests::TestFailed,
@@ -414,11 +413,8 @@ impl TestResults {
 
         for (module_id, test_results) in self.final_statistics.passed.iter() {
             for test_result in test_results {
-                let qualified_function_name = format!(
-                    "{}::{}",
-                    format_module_id(module_id),
-                    test_result.function_ident
-                );
+                let qualified_function_name =
+                    format!("{}::{}", module_id, test_result.function_ident);
                 max_function_name_size =
                     std::cmp::max(max_function_name_size, qualified_function_name.len());
                 stats.push((
@@ -433,8 +429,7 @@ impl TestResults {
             for test_failure in test_failures {
                 let qualified_function_name = format!(
                     "{}::{}",
-                    format_module_id(module_id),
-                    test_failure.test_run_info.function_ident
+                    module_id, test_failure.test_run_info.function_ident
                 );
                 max_function_name_size =
                     std::cmp::max(max_function_name_size, qualified_function_name.len());
@@ -511,11 +506,7 @@ impl TestResults {
         if !self.final_statistics.failed.is_empty() {
             writeln!(writer.lock().unwrap(), "\nTest failures:\n")?;
             for (module_id, test_failures) in &self.final_statistics.failed {
-                writeln!(
-                    writer.lock().unwrap(),
-                    "Failures in {}:",
-                    format_module_id(module_id)
-                )?;
+                writeln!(writer.lock().unwrap(), "Failures in {}:", module_id)?;
                 for test_failure in test_failures {
                     writeln!(
                         writer.lock().unwrap(),

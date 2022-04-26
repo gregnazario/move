@@ -180,10 +180,8 @@ pub fn convert_move_struct_tag(
 ) -> PartialVMResult<StructInstantiation> {
     // get struct env
     let struct_id = env.find_struct_by_tag(struct_tag).ok_or_else(|| {
-        PartialVMError::new(StatusCode::TYPE_RESOLUTION_FAILURE).with_message(format!(
-            "Cannot find struct `{}::{}::{}`",
-            struct_tag.address, struct_tag.module, struct_tag.name,
-        ))
+        PartialVMError::new(StatusCode::TYPE_RESOLUTION_FAILURE)
+            .with_message(format!("Cannot find struct `{}`", struct_tag))
     })?;
     let struct_env = env.get_struct(struct_id);
     let ident = StructIdent::new(&struct_env);
@@ -299,10 +297,8 @@ fn get_abilities(env: &GlobalEnv, ty: &TypeTag) -> PartialVMResult<AbilitySet> {
         ),
         TypeTag::Struct(struct_tag) => {
             let struct_id = env.find_struct_by_tag(struct_tag).ok_or_else(|| {
-                PartialVMError::new(StatusCode::TYPE_RESOLUTION_FAILURE).with_message(format!(
-                    "Cannot find struct `{}::{}::{}`",
-                    struct_tag.address, struct_tag.module, struct_tag.name,
-                ))
+                PartialVMError::new(StatusCode::TYPE_RESOLUTION_FAILURE)
+                    .with_message(format!("Cannot find struct `{}`", struct_tag,))
             })?;
             let struct_env = env.get_struct(struct_id);
             let declared_phantom_parameters = (0..struct_env.get_type_parameters().len())

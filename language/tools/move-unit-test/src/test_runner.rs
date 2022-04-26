@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 use crate::{
-    extensions, format_module_id,
+    extensions,
     test_reporter::{FailureReason, TestFailure, TestResults, TestRunInfo, TestStatistics},
 };
 use anyhow::Result;
@@ -220,7 +220,7 @@ impl<'a, 'b, W: Write> TestOutput<'a, 'b, W> {
             self.writer.lock().unwrap(),
             "[ {}    ] {}::{}",
             "PASS".bold().bright_green(),
-            format_module_id(&self.test_plan.module_id),
+            &self.test_plan.module_id,
             fn_name
         )
         .unwrap()
@@ -231,7 +231,7 @@ impl<'a, 'b, W: Write> TestOutput<'a, 'b, W> {
             self.writer.lock().unwrap(),
             "[ {}    ] {}::{}",
             "FAIL".bold().bright_red(),
-            format_module_id(&self.test_plan.module_id),
+            &self.test_plan.module_id,
             fn_name,
         )
         .unwrap()
@@ -242,7 +242,7 @@ impl<'a, 'b, W: Write> TestOutput<'a, 'b, W> {
             self.writer.lock().unwrap(),
             "[ {} ] {}::{}",
             "TIMEOUT".bold().bright_yellow(),
-            format_module_id(&self.test_plan.module_id),
+            &self.test_plan.module_id,
             fn_name,
         )
         .unwrap();

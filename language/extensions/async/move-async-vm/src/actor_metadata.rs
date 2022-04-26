@@ -20,12 +20,7 @@ pub struct ActorMetadata {
 
 /// Compute a hash for a message.
 pub fn message_hash(module_id: &ModuleId, handler_id: &IdentStr) -> u64 {
-    let hash_str = format!(
-        "0x{}::{}::{}",
-        module_id.address(),
-        module_id.name(),
-        handler_id
-    );
+    let hash_str = format!("{}::{}", module_id, handler_id);
     let hash_bytes: [u8; 8] = Sha3_256::digest(hash_str.as_bytes())[0..8]
         .try_into()
         .unwrap();

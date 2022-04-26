@@ -1957,12 +1957,7 @@ impl Function {
     pub(crate) fn pretty_string(&self) -> String {
         match &self.scope {
             Scope::Script(_) => "Script::main".into(),
-            Scope::Module(id) => format!(
-                "0x{}::{}::{}",
-                id.address(),
-                id.name().as_str(),
-                self.name.as_str()
-            ),
+            Scope::Module(id) => format!("{}::{}", id, self.name.as_str()),
         }
     }
 

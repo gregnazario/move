@@ -8,7 +8,7 @@ use crate::{
 #[cfg(any(test, feature = "fuzzing"))]
 use proptest_derive::Arbitrary;
 use serde::{Deserialize, Serialize};
-use std::fmt::{Display, Formatter};
+use std::fmt::{Debug, Display, Formatter};
 
 pub const CODE_TAG: u8 = 0;
 pub const RESOURCE_TAG: u8 = 1;
@@ -36,7 +36,7 @@ pub enum TypeTag {
     Struct(StructTag),
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Hash, Eq, Clone, PartialOrd, Ord)]
+#[derive(Serialize, Deserialize, PartialEq, Hash, Eq, Clone, PartialOrd, Ord)]
 pub struct StructTag {
     pub address: AccountAddress,
     pub module: Identifier,
@@ -60,7 +60,7 @@ impl StructTag {
 
 impl Display for StructTag {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}::{}::{}", address, module, name)
+        write!(f, "{}::{}::{}", self.address, self.module, self.name)
     }
 }
 
@@ -130,7 +130,7 @@ impl Display for ModuleId {
     }
 }
 
-impl Display for StructTag {
+impl Debug for StructTag {
     fn fmt(&self, f: &mut Formatter) -> std::fmt::Result {
         write!(f, "{}::{}::{}", self.address, self.module, self.name)?;
         if let Some(first_ty) = self.type_params.first() {
