@@ -316,7 +316,7 @@ let hex_u128: u128 = 0xDEADBEEF;
 <p>Bitwise operations do not abort.</p>
 <table><thead><tr><th>Syntax</th><th>Operation</th><th>Description</th></tr></thead><tbody>
 <tr><td><code>&amp;</code></td><td>bitwise and</td><td>Performs a boolean and for each bit pairwise</td></tr>
-<tr><td>`</td><td>`</td><td>bitwise or</td></tr>
+<tr><td><code>\|</code></td><td>bitwise or</td><td>Performs a boolean or for each bit pairwise</td></tr>
 <tr><td><code>^</code></td><td>bitwise xor</td><td>Performs a boolean exclusive or for each bit pairwise</td></tr>
 </tbody></table>
 <h3 id="bit-shifts"><a class="header" href="#bit-shifts">Bit Shifts</a></h3>
@@ -514,7 +514,7 @@ library:</p>
 <tr><td><code>vector::contains&lt;T&gt;(v: &amp;vector&lt;T&gt;, e: &amp;T): bool</code></td><td>Return true if <code>e</code> is in the vector <code>v</code></td><td>Never</td></tr>
 <tr><td><code>vector::swap&lt;T&gt;(v: &amp;mut vector&lt;T&gt;, i: u64, j: u64)</code></td><td>Swaps the elements at the <code>i</code>th and <code>j</code>th indices in the vector <code>v</code>.</td><td>If <code>i</code> or <code>j</code> is out of bounds</td></tr>
 <tr><td><code>vector::reverse&lt;T&gt;(v: &amp;mut vector&lt;T&gt;)</code></td><td>Reverses the order of the elements in the vector <code>v</code> in place</td><td>Never</td></tr>
-<tr><td><code>vector::index_of&lt;T&gt;(v: &amp;vector&lt;T&gt;, e: &amp;T): bool</code></td><td>Return <code>(true, i)</code> if <code>e</code> is in the vector <code>v</code> at index <code>i</code>. Otherwise, returns <code>(false, 0)</code>.</td><td>Never</td></tr>
+<tr><td><code>vector::index_of&lt;T&gt;(v: &amp;vector&lt;T&gt;, e: &amp;T): (bool, u64)</code></td><td>Return <code>(true, i)</code> if <code>e</code> is in the vector <code>v</code> at index <code>i</code>. Otherwise, returns <code>(false, 0)</code>.</td><td>Never</td></tr>
 <tr><td><code>vector::remove&lt;T&gt;(v: &amp;mut vector&lt;T&gt;, i: u64): T</code></td><td>Remove the <code>i</code>th element of the vector <code>v</code>, shifting all subsequent elements. This is O(n) and preserves ordering of elements in the vector.</td><td>If <code>i</code> is out of bounds.</td></tr>
 <tr><td><code>vector::swap_remove&lt;T&gt;(v: &amp;mut vector&lt;T&gt;, i: u64): T</code></td><td>Swap the <code>i</code>th element of the vector <code>v</code> with the last element and then pop the vector, This is O(1), but does not preserve ordering of elements in the vector.</td><td>If <code>i</code> is out of bounds.</td></tr>
 </tbody></table>
@@ -2613,7 +2613,7 @@ module m {
 <h2 id="storing-resources-in-global-storage"><a class="header" href="#storing-resources-in-global-storage">Storing Resources in Global Storage</a></h2>
 <p>Only structs with the <code>key</code> ability can be saved directly in
 <a href="./global-storage-operators.html">persistent global storage</a>. All values stored within those <code>key</code>
-structs must have the <code>store</code> abilities. See the [ability](./abilities] and
+structs must have the <code>store</code> abilities. See the <a href="./abilities.html">ability</a> and
 <a href="./global-storage-operators.html">global storage</a> chapters for more detail.</p>
 <h2 id="examples-3"><a class="header" href="#examples-3">Examples</a></h2>
 <p>Here are two short examples of how you might use structs to represent valuable data (in the case of
@@ -4265,7 +4265,7 @@ Test result: OK. Total tests: 3; passed: 3; failed: 0
     }
 }
 </code></pre>
-<p>we would get get the following output when running the tests:</p>
+<p>we would get the following output when running the tests:</p>
 <pre><code>$ move test -g
 CACHED MoveStdlib
 BUILDING TestExample
