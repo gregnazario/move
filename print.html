@@ -152,7 +152,6 @@
 <p>Move takes its cue from <a href="https://www.rust-lang.org/">Rust</a> by using resource types with move (hence the name) semantics as an explicit representation of digital assets, such as currency.</p>
 <h2 id="who-is-move-for"><a class="header" href="#who-is-move-for">Who is Move for?</a></h2>
 <p>Move was designed and created as a secure, verified, yet flexible programming language. The first use of Move is for the implementation of the Diem blockchain. That said, the language is still evolving. Move has the potential to be a language for other blockchains, and even non-blockchain use cases as well.</p>
-<p>Given custom Move modules will not be supported at the <a href="https://diem.com/white-paper/#whats-next">launch</a> of the Diem Payment Network (DPN), we are targeting an early Move Developer persona.</p>
 <p>The early Move Developer is one with some programming experience, who wants to begin understanding the core programming language and see examples of its usage.</p>
 <h3 id="hobbyists"><a class="header" href="#hobbyists">Hobbyists</a></h3>
 <p>Understanding that the capability to create custom modules on the Diem Payment Network will not be available at launch, the hobbyist Move Developer is interested in learning the intricacies of the language. She will understand the basic syntax, the standard libraries available, and write example code that can be executed using the Move CLI. The Move Developer may even want to dig into understanding how the Move Virtual Machine executes the code she writes.</p>
@@ -261,7 +260,7 @@ The <a href="./constants.html"><code>const</code></a> keyword defines private co
 <div style="break-before: page; page-break-before: always;"></div><h1 id="move-tutorial"><a class="header" href="#move-tutorial">Move Tutorial</a></h1>
 <p>Please refer to the <a href="https://github.com/move-language/move/tree/main/language/documentation/tutorial">Move Tutorial</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="integers"><a class="header" href="#integers">Integers</a></h1>
-<p>Move supports three unsigned integer types: <code>u8</code>, <code>u64</code>, and <code>u128</code>. Values of these types range from 0 to a maximum that depends on the size of the type.</p>
+<p>Move supports six unsigned integer types: <code>u8</code>, <code>u16</code>, <code>u32</code>, <code>u64</code>, <code>u128</code>, and <code>u256</code>. Values of these types range from 0 to a maximum that depends on the size of the type.</p>
 <table><thead><tr><th>Type</th><th>Value Range</th></tr></thead><tbody>
 <tr><td>Unsigned 8-bit integer, <code>u8</code></td><td>0 to 2<sup>8</sup> - 1</td></tr>
 <tr><td>Unsigned 16-bit integer, <code>u16</code></td><td>0 to 2<sup>16</sup> - 1</td></tr>
@@ -272,7 +271,7 @@ The <a href="./constants.html"><code>const</code></a> keyword defines private co
 </tbody></table>
 <h2 id="literals"><a class="header" href="#literals">Literals</a></h2>
 <p>Literal values for these types are specified either as a sequence of digits (e.g.,<code>112</code>) or as hex literals, e.g., <code>0xFF</code>. The type of the literal can optionally be added as a suffix, e.g., <code>112u8</code>. If the type is not specified, the compiler will try to infer the type from the context where the literal is used. If the type cannot be inferred, it is assumed to be <code>u64</code>.</p>
-<p>Decimal literals can be separated by underscores for grouping and readability. (e.g.,<code>1_234_5678</code>, <code>1_000u128</code>). However, hexadecimal literals cannot.</p>
+<p>Number literals can be separated by underscores for grouping and readability. (e.g.,<code>1_234_5678</code>, <code>1_000u128</code>, <code>0xAB_CD_12_35</code>).</p>
 <p>If a literal is too large for its specified (or inferred) size range, an error is reported.</p>
 <h3 id="examples"><a class="header" href="#examples">Examples</a></h3>
 <pre><code class="language-move">// literals with explicit annotations;
@@ -312,7 +311,7 @@ let hex_u16: u16 = 0x1BAE;
 let hex_u32: u32 = 0xDEAD80;
 let hex_u64: u64 = 0xCAFE;
 let hex_u128: u128 = 0xDEADBEEF;
-let hex_u256: u256 = 0x1123456ABCDEF;
+let hex_u256: u256 = 0x1123_456A_BCDE_F;
 </code></pre>
 <h2 id="operations"><a class="header" href="#operations">Operations</a></h2>
 <h3 id="arithmetic"><a class="header" href="#arithmetic">Arithmetic</a></h3>
@@ -4853,8 +4852,9 @@ The reason should be a unique number relative to the module which raised the err
 <li><strong>Module names</strong>: should be lower snake case, e.g., <code>fixed_point32</code>, <code>vector</code>.</li>
 <li><strong>Type names</strong>: should be camel case if they are not a native type, e.g., <code>Coin</code>, <code>RoleId</code>.</li>
 <li><strong>Function names</strong>: should be lower snake case, e.g., <code>destroy_empty</code>.</li>
-<li><strong>Constant names</strong>: should be upper snake case, e.g., <code>REQUIRES_CAPABILITY</code>.</li>
-<li>Generic types should be descriptive, or anti-descriptive where appropriate, e.g., <code>T</code> or <code>Element</code> for the Vector generic type parameter. Most of the time the &quot;main&quot; type in a module should be the same name as the module e.g., <code>option::Option</code>, <code>fixed_point32::FixedPoint32</code>.</li>
+<li><strong>Constant names</strong>: should be upper camel case and begin with an <code>E</code> if they represent error codes (e.g., <code>EIndexOutOfBounds</code>) and upper snake case if they represent a non-error value (e.g., <code>MIN_STAKE</code>).</li>
+<li></li>
+<li><strong>Generic type names</strong>: should be descriptive, or anti-descriptive where appropriate, e.g., <code>T</code> or <code>Element</code> for the Vector generic type parameter. Most of the time the &quot;main&quot; type in a module should be the same name as the module e.g., <code>option::Option</code>, <code>fixed_point32::FixedPoint32</code>.</li>
 <li><strong>Module file names</strong>: should be the same as the module name e.g., <code>Option.move</code>.</li>
 <li><strong>Script file names</strong>: should be lower snake case and should match the name of the “main” function in the script.</li>
 <li><strong>Mixed file names</strong>: If the file contains multiple modules and/or scripts, the file name should be lower snake case, where the name does not match any particular module/script inside.</li>
